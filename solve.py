@@ -1,62 +1,29 @@
-board = [
-    [7, 8, " ", 4, " ", " ", 1, 2, " "],
-    [6, " ", " ", " ", 7, 5, " ", " ", 9],
-    [" ", " ", " ", 6, " ", 1, " ", 7, 8],
-    [" ", " ", 7, " ", 4, " ", 2, 6, " "],
-    [" ", " ", 1, " ", 5, " ", 9, 3, " "],
-    [9, " ", 4, " ", 6, " ", " ", " ", 5],
-    [" ", 7, " ", 3, " ", " ", " ", 1, 2],
-    [1, 2, " ", " ", " ", 7, 4, " ", " "],
-    [" ", 4, 9, 2, " ", 6, " ", " ", 7]
-]
+import random
 
-''' [try more boards below ]
-[5, 3, " ", " ", 7, " ", " ", " ", " "],
-    [6, " ", " ", 1, 9, 5, " ", " ", " "],
-    [" ", 9, 8, " ", " ", " ", " ", 6, " "],
-    [8, " ", " ", " ", 6, " ", " ", " ", 3],
-    [4, " ", " ", 8, " ", 3, " ", " ", 1],
-    [7, " ", " ", " ", 2, " ", " ", " ", 6],
-    [" ", 6, " ", " ", " ", " ", 2, 8, " "],
-    [" ", " ", " ", 4, 1, 9, " ", " ", 5],
-    [" ", " ", " ", " ", 8, " ", " ", 7, 9]
+def generate_New():
+    board = [[0 for _ in range(9)] for _ in range(9)]
 
-     [8, " ", " ", " ", " ", " ", " ", " ", " "],
-    [" ", " ", 3, 6, " ", " ", " ", " ", " "],
-    [" ", 7, " ", " ", 9, " ", 2, " ", " "],
-    [" ", 5, " ", " ", " ", 7, " ", " ", " "],
-    [" ", " ", " ", " ", 4, 5, 7, " ", " "],
-    [" ", " ", " ", 1, " ", " ", " ", 3, " "],
-    [" ", " ", 1, " ", " ", " ", " ", 6, 8],
-    [" ", " ", 8, 5, " ", " ", " ", 1, " "],
-    [" ", 9, " ", " ", " ", " ", 4, " ", " "]
+    def fill_board(bo):
+        for i in range(9):
+            for j in range(9):
+                if bo[i][j] == 0:
+                    numbers = list(range(1, 10))
+                    random.shuffle(numbers)
+                    for num in numbers:
+                        if valid(bo, num, (i, j)):
+                            bo[i][j] = num
+                            if fill_board(bo):
+                                return True
+                            bo[i][j] = 0
+                    return False
+        return True
+    fill_board(board)
 
+    for _ in range(random.randint(40, 50)):  # Adjust for difficulty
+        row, col = random.randint(0, 8), random.randint(0, 8)
+        board[row][col] = " "
 
-
-    '''
-
-
-def valid(bo, num, pos):
-    # Check row
-    for i in range(len(bo[0])):
-        if bo[pos[0]][i] == num and pos[1] != i:
-            return False
-
-    # Check column
-    for i in range(len(bo)):
-        if bo[i][pos[1]] == num and pos[0] != i:
-            return False
-
-    # Check box
-    box_x = pos[1] // 3
-    box_y = pos[0] // 3
-
-    for i in range(box_y * 3, box_y * 3 + 3):
-        for j in range(box_x * 3, box_x * 3 + 3):
-            if bo[i][j] == num and (i, j) != pos:
-                return False
-
-    return True
+    return board
 
 
 def print_board(bo):
@@ -72,6 +39,7 @@ def print_board(bo):
                 print(bo[i][j])
             else:
                 print(str(bo[i][j]) + " ", end="")
+    print()
 
 
 def find_empty(bo):
@@ -79,8 +47,8 @@ def find_empty(bo):
         for j in range(len(bo[0])):
             if bo[i][j] == " ":
                 return (i, j)  # row, col
-
     return None
+
 
 def valid(bo, num, pos):
     # Check row
@@ -103,6 +71,7 @@ def valid(bo, num, pos):
                 return False
 
     return True
+
 
 def solve(bo):
     find = find_empty(bo)
@@ -123,18 +92,11 @@ def solve(bo):
     return False
 
 
-
-
-
-
-print("_______Sudoku Board_______")
+# Main program
+print("Generating a New Sudoku Board:")
+board = generate_New()
 print_board(board)
+
+print("Solving the Sudoku Board:")
 solve(board)
-
-print("                          ")
-print("                          ")
-print("                          ")
-print("                          ")
-
-print("________ Solved! _________")
 print_board(board)
