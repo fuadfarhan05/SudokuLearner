@@ -7,8 +7,9 @@ board = [
     [9,0,4,0,0,0,0,0,5],
     [0,0,0,3,0,0,0,1,2],
     [1,2,0,0,0,7,4,0,0],
-    [0,4,9,2,0,0,0,0,7]
+    [0,4,9,2,0,0,0,0,7],
 ]
+
 
 def solve(bo):
     find = find_emptySquare(bo)
@@ -72,8 +73,14 @@ def find_emptySquare(bo):
             
     return None
 
+print("_______Sudoku Board_______")
 print_board(board)
 solve(board)
+
 print("                          ")
+print("                          ")
+print("                          ")
+print("                          ")
+
 print("________ Solved! _________")
 print_board(board)
